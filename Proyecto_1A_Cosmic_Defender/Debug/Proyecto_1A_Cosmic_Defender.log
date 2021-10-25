@@ -1,1 +1,7 @@
-﻿  Proyecto_1A_Cosmic_Defender.vcxproj -> C:\Users\jcard\source\repos\Proyecto_1A_Cosmic_Defender\Debug\Proyecto_1A_Cosmic_Defender.exe
+﻿  Proyecto_1A_Cosmic_Defender.cpp
+C:\Users\jcard\source\repos\Proyecto_1A_Cosmic_Defender\Proyecto_1A_Cosmic_Defender\FuncionesCD.h(21,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\jcard\source\repos\Proyecto_1A_Cosmic_Defender\Proyecto_1A_Cosmic_Defender\FuncionesCD.h(36,2): warning C4091: 'typedef ': ignored on left of 'bala' when no variable is declared
+C:\Users\jcard\source\repos\Proyecto_1A_Cosmic_Defender\Proyecto_1A_Cosmic_Defender\FuncionesCD.h(43,2): warning C4091: 'typedef ': ignored on left of 'jugador' when no variable is declared
+C:\Users\jcard\source\repos\Proyecto_1A_Cosmic_Defender\Proyecto_1A_Cosmic_Defender\FuncionesCD.h(53,2): warning C4091: 'typedef ': ignored on left of 'enemigo' when no variable is declared
+C:\Users\jcard\source\repos\Proyecto_1A_Cosmic_Defender\Proyecto_1A_Cosmic_Defender\CosmicDefender.h(27,30): warning C4081: expected 'newline'; found ';'
+  Proyecto_1A_Cosmic_Defender.vcxproj -> C:\Users\jcard\source\repos\Proyecto_1A_Cosmic_Defender\Debug\Proyecto_1A_Cosmic_Defender.exe

@@ -54,7 +54,7 @@ int main() {
 	al_install_mouse();
 
 	// Para que el display sea en pantalla completa y se le pueda cambiar el tamaño
-	al_set_new_display_flags(ALLEGRO_FULLSCREEN | ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
+	al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
 
 	// Se crea un display actual para el menú principal con los tamaños máximos de la pantalla
 	ALLEGRO_DISPLAY* ventanaMenu = al_create_display(1920, 1080);
@@ -67,17 +67,22 @@ int main() {
 		al_show_native_message_box(NULL, "Error de Allegro", "Error", "No se puede crear el Display", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		return -1;
 	}
-	// Se coloca la la ventana
-	al_set_window_position(ventanaMenu, 100, 150);
 
 	// Se van a cargar las variables y datos para ALLEGRO
 	// Variables de Allegro
 	// 
 	// Imágen para el jugador
-	ALLEGRO_BITMAP* Jugador = al_load_bitmap("Images/SpaceShip.jpg");
+	ALLEGRO_BITMAP* SkinsJugador[3];
+	SkinsJugador[0] = al_load_bitmap("Images/SpaceShip.png");
+	SkinsJugador[1] = al_load_bitmap("Images/SpaceShip2.png");
+	SkinsJugador[2] = al_load_bitmap("Images/SpaceShip3.png");
+
 
 	// Fondo del Menú
 	ALLEGRO_BITMAP* FondoMenu = al_load_bitmap("Images/FondoMenu.jpg");
+
+	// Fondo selección de Jugador
+	ALLEGRO_BITMAP* FondoSelec = al_load_bitmap("Images/Fondo_selec_naves.jpg");
 
 	// Música del menú
 	ALLEGRO_SAMPLE* musicaFondoMenu = al_load_sample("Sound/MusicaMenu.wav");
@@ -85,8 +90,14 @@ int main() {
 	// Fuentes del Menú
 	ALLEGRO_FONT* fuenteTitulo = al_load_font("Font/Quake___.ttf",75,ALLEGRO_ALIGN_CENTRE);
 
+	ALLEGRO_FONT* TitleSubVentana = al_load_font("Font/Quake___.ttf", 45, ALLEGRO_ALIGN_CENTRE);
+	ALLEGRO_FONT* fuenteSubVentana = al_load_font("Font/Quake___.ttf", 30, ALLEGRO_ALIGN_CENTRE);
+
 	// Se creará una cola de eventos para el menú
 	ALLEGRO_EVENT_QUEUE* cola_menu = al_create_event_queue();
+
+	// Timer de Refrescamiento
+	ALLEGRO_TIMER* timerRefresh = al_create_timer(1.0 / FPS);
 
 	// Se registrarán los timers, el mouse y cambios en la pantalla como eventos
 
@@ -95,6 +106,9 @@ int main() {
 
 	// Se registra el mouse como una fuente de eventos de la cola
 	al_register_event_source(cola_menu, al_get_mouse_event_source());
+
+	// Se registra el timer como una fuente de eventos en la cola
+	al_register_event_source(cola_menu, al_get_timer_event_source(timerRefresh));
 
 	// Se reproduce la música para el menú en bucle hasta que se cierre la ventana
 	al_play_sample(musicaFondoMenu, 0.3, 0,1, ALLEGRO_PLAYMODE_LOOP, NULL);
@@ -113,19 +127,11 @@ int main() {
 	int XCursor = 0;
 	int YCursor = 0;
 
-	al_destroy_display(ventanaMenu);
-
-	ALLEGRO_DISPLAY* nuevo = al_create_display(1920, 1080);
-
+	al_start_timer(timerRefresh);
 
 	// Mientras no se deba terminar
 	while (!terminar) {
 
-		al_destroy_sample(musicaFondoMenu);
-		//Cosmic_Defender(Jugador);
-		break;
-
-		/*
 		ALLEGRO_EVENT evento;
 
 		al_wait_for_event(cola_menu, &evento);
@@ -145,7 +151,7 @@ int main() {
 		al_draw_text(fuenteTitulo, al_map_rgb(200, 200, 200), mitadX, 700, ALLEGRO_ALIGN_CENTRE, "INSTRUCCIONES");
 		al_draw_text(fuenteTitulo, al_map_rgb(225, 225, 225), mitadX, 900, ALLEGRO_ALIGN_CENTRE, "SALIR");
 
-
+		
 		// Para eventos generados por el Mouse
 		if (evento.type == ALLEGRO_EVENT_MOUSE_AXES)
 		{
@@ -164,16 +170,125 @@ int main() {
 			// Se agrega el 1 al if para que solo cuente si se presiona el botón izquierdo
 			if (evento.mouse.button & 1) {
 
-				al_destroy_sample(musicaFondoMenu);
-				al_destroy_display(ventanaMenu);
+				// Se le va a preguntar al usuario que skin prefiere para su nave
+				// Esto se hará a través de una una ventana nueva que funciona a través de un ciclo que no se detendrá hasta que se marque salir
 
-				bool finalizar = true;
-				while (finalizar) {
-					finalizar = Cosmic_Defender(Jugador);
+				bool finalizar = false;
+				// Se limpia el display
+				al_clear_to_color(al_map_rgb(0, 0, 0));
+				al_flip_display();
+				int XCursor2 = 0;
+				int	YCursor2 = 0;
+				// Se crea un ciclo para la ventana
+				while (!finalizar) {
+					al_wait_for_event(cola_menu, &evento);
+
+					// Se limpia el display
+					al_clear_to_color(al_map_rgb(0, 0, 0));
+					
+					al_draw_tinted_bitmap(FondoSelec, al_map_rgb(50, 50, 50), 0, 0, NULL);
+
+					// Se va dibujar el menú para seleccionar una skin de jugador
+					al_draw_text(TitleSubVentana, al_map_rgb(250, 75, 75), mitadX, 100, ALLEGRO_ALIGN_CENTRE, "SELECCIONE UN JUGADOR");
+
+					// Manticore
+					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 160, 500, ALLEGRO_ALIGN_CENTRE, "MANTICORE");
+
+					int anchoImagen = al_get_bitmap_width(SkinsJugador[0]);
+					int altoImagen = al_get_bitmap_height(SkinsJugador[0]);
+
+					al_draw_scaled_bitmap(SkinsJugador[0],0,0, anchoImagen, altoImagen, 50, 250, 220, 220, NULL);
+
+					// Siege
+					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 530, 500, ALLEGRO_ALIGN_CENTRE, "SIEGE");
+
+					anchoImagen = al_get_bitmap_width(SkinsJugador[1]);
+					altoImagen = al_get_bitmap_height(SkinsJugador[1]);
+
+					al_draw_scaled_bitmap(SkinsJugador[1], 0, 0, anchoImagen, altoImagen, 430, 250, 200, 200, NULL);
+
+					// Specter
+					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 900, 500, ALLEGRO_ALIGN_CENTRE, "SPECTER");
+
+					anchoImagen = al_get_bitmap_width(SkinsJugador[2]);
+					altoImagen = al_get_bitmap_height(SkinsJugador[2]);
+
+					al_draw_scaled_bitmap(SkinsJugador[2], 0, 0, anchoImagen, altoImagen, 800, 270, 180, 180, NULL);
+
+					// Para regresar al menú principal
+					al_draw_text(TitleSubVentana, al_map_rgb(250, 250, 250), mitadX, 800, ALLEGRO_ALIGN_CENTRE, "REGRESAR AL MENU PRINCIPAL");
+
+					// Para eventos generados por el Mouse
+					if (evento.type == ALLEGRO_EVENT_MOUSE_AXES)
+					{
+						XCursor = evento.mouse.x;
+						YCursor = evento.mouse.y;
+					}
+
+					// Se va a verificar si se clickeo sobre alguno de los nombres de las naves para seleccionarla
+					// Dependiendo de la nave se va a lanzar la función cosmic defender con una skin diferente
+					
+					// Para Seleccionar Manticore
+					if ((XCursor >= 50 && XCursor <= 260) && (YCursor >= 480 && YCursor <= 520)) {
+						al_draw_text(fuenteSubVentana, al_map_rgb(250, 75, 250), 160, 500, ALLEGRO_ALIGN_CENTRE, "MANTICORE");
+
+						// Se revisa si se selecciona esta nave
+						if (evento.mouse.button & 1) {
+
+							al_destroy_sample(musicaFondoMenu);
+							al_destroy_display(ventanaMenu);
+							finalizar = Cosmic_Defender(SkinsJugador[0]);
+						}
+					}
+
+					// Para seleccionar Siege
+					if ((XCursor >= 460 && XCursor <= 580) && (YCursor >= 480 && YCursor <= 520)) {
+						al_draw_text(fuenteSubVentana, al_map_rgb(250, 75, 75), 530, 500, ALLEGRO_ALIGN_CENTRE, "SIEGE");
+
+						// Se revisa si se selecciona esta nave
+						if (evento.mouse.button & 1) {
+
+							al_destroy_sample(musicaFondoMenu);
+							al_destroy_display(ventanaMenu);
+							finalizar = Cosmic_Defender(SkinsJugador[1]);
+						}
+					}
+
+					// Para seleccionar Specter
+					if ((XCursor >= 820 && XCursor <= 970) && (YCursor >= 480 && YCursor <= 520)) {
+						al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 75), 900, 500, ALLEGRO_ALIGN_CENTRE, "SPECTER");
+
+						// Se revisa si se selecciona esta nave
+						if (evento.mouse.button & 1) {
+
+							al_destroy_sample(musicaFondoMenu);
+							al_destroy_display(ventanaMenu);
+							finalizar = Cosmic_Defender(SkinsJugador[2]);
+						}
+
+					}
+
+					// Si se quiere volver al menú principal
+					if ((XCursor >= mitadX - 150 && XCursor <= mitadX + 150) && (YCursor >= 780 && YCursor <= 875)) {
+						al_draw_text(TitleSubVentana, al_map_rgb(75, 250, 250), mitadX, 800, ALLEGRO_ALIGN_CENTRE, "REGRESAR AL MENU PRINCIPAL");
+
+						// Se revisa si se selecciona esta opcion
+						if (evento.mouse.button & 1) {
+
+							al_destroy_sample(musicaFondoMenu);
+							al_destroy_display(ventanaMenu);
+							finalizar = true;
+						}
+					}
+
+					// Se refresca la pantalla
+					al_flip_display();
+
 				}
+				al_install_mouse();
 				main();
 				
-				
+							
 			}
 		}
 
@@ -244,7 +359,6 @@ int main() {
 		else if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			terminar = true;
 		}
-	*/
 	}
 
 	return 666;

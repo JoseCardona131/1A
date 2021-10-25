@@ -183,14 +183,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Proyecto_1A_Cosmic_Defender.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CosmicDefender.h" />
     <ClInclude Include="FuncionesCD.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Proyecto_1A_Cosmic_Defender.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
