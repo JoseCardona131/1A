@@ -84,6 +84,17 @@ int main() {
 	// Fondo selección de Jugador
 	ALLEGRO_BITMAP* FondoSelec = al_load_bitmap("Images/Fondo_selec_naves.jpg");
 
+	// Fondo Instrucciones
+	ALLEGRO_BITMAP* FondoIns = al_load_bitmap("Images/FondoInstrucciones.jpg");
+
+	// Fondo del Registro
+	ALLEGRO_BITMAP* FondoRegistro = al_load_bitmap("Images/FondoRanking.jpg");
+
+	// Imágenes para las instrucciones
+	ALLEGRO_BITMAP* barra = al_load_bitmap("Images/BarraEspaciadora.png");
+
+	ALLEGRO_BITMAP* flechas = al_load_bitmap("Images/Arrowkeys.png");
+
 	// Música del menú
 	ALLEGRO_SAMPLE* musicaFondoMenu = al_load_sample("Sound/MusicaMenu.wav");
 
@@ -91,7 +102,7 @@ int main() {
 	ALLEGRO_FONT* fuenteTitulo = al_load_font("Font/Quake___.ttf",75,ALLEGRO_ALIGN_CENTRE);
 
 	ALLEGRO_FONT* TitleSubVentana = al_load_font("Font/Quake___.ttf", 45, ALLEGRO_ALIGN_CENTRE);
-	ALLEGRO_FONT* fuenteSubVentana = al_load_font("Font/Quake___.ttf", 30, ALLEGRO_ALIGN_CENTRE);
+	ALLEGRO_FONT* fuenteSubVentana = al_load_font("Font/Quake___.ttf", 35, ALLEGRO_ALIGN_CENTRE);
 
 	// Se creará una cola de eventos para el menú
 	ALLEGRO_EVENT_QUEUE* cola_menu = al_create_event_queue();
@@ -177,8 +188,7 @@ int main() {
 				// Se limpia el display
 				al_clear_to_color(al_map_rgb(0, 0, 0));
 				al_flip_display();
-				int XCursor2 = 0;
-				int	YCursor2 = 0;
+
 				// Se crea un ciclo para la ventana
 				while (!finalizar) {
 					al_wait_for_event(cola_menu, &evento);
@@ -192,28 +202,28 @@ int main() {
 					al_draw_text(TitleSubVentana, al_map_rgb(250, 75, 75), mitadX, 100, ALLEGRO_ALIGN_CENTRE, "SELECCIONE UN JUGADOR");
 
 					// Manticore
-					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 160, 500, ALLEGRO_ALIGN_CENTRE, "MANTICORE");
+					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 460, 500, ALLEGRO_ALIGN_CENTRE, "MANTICORE");
 
 					int anchoImagen = al_get_bitmap_width(SkinsJugador[0]);
 					int altoImagen = al_get_bitmap_height(SkinsJugador[0]);
 
-					al_draw_scaled_bitmap(SkinsJugador[0],0,0, anchoImagen, altoImagen, 50, 250, 220, 220, NULL);
+					al_draw_scaled_bitmap(SkinsJugador[0],0,0, anchoImagen, altoImagen, 350, 250, 220, 220, NULL);
 
 					// Siege
-					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 530, 500, ALLEGRO_ALIGN_CENTRE, "SIEGE");
+					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 930, 500, ALLEGRO_ALIGN_CENTRE, "SIEGE");
 
 					anchoImagen = al_get_bitmap_width(SkinsJugador[1]);
 					altoImagen = al_get_bitmap_height(SkinsJugador[1]);
 
-					al_draw_scaled_bitmap(SkinsJugador[1], 0, 0, anchoImagen, altoImagen, 430, 250, 200, 200, NULL);
+					al_draw_scaled_bitmap(SkinsJugador[1], 0, 0, anchoImagen, altoImagen, 830, 250, 200, 200, NULL);
 
 					// Specter
-					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 900, 500, ALLEGRO_ALIGN_CENTRE, "SPECTER");
+					al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 250), 1400, 500, ALLEGRO_ALIGN_CENTRE, "SPECTER");
 
 					anchoImagen = al_get_bitmap_width(SkinsJugador[2]);
 					altoImagen = al_get_bitmap_height(SkinsJugador[2]);
 
-					al_draw_scaled_bitmap(SkinsJugador[2], 0, 0, anchoImagen, altoImagen, 800, 270, 180, 180, NULL);
+					al_draw_scaled_bitmap(SkinsJugador[2], 0, 0, anchoImagen, altoImagen, 1300, 270, 180, 180, NULL);
 
 					// Para regresar al menú principal
 					al_draw_text(TitleSubVentana, al_map_rgb(250, 250, 250), mitadX, 800, ALLEGRO_ALIGN_CENTRE, "REGRESAR AL MENU PRINCIPAL");
@@ -229,8 +239,8 @@ int main() {
 					// Dependiendo de la nave se va a lanzar la función cosmic defender con una skin diferente
 					
 					// Para Seleccionar Manticore
-					if ((XCursor >= 50 && XCursor <= 260) && (YCursor >= 480 && YCursor <= 520)) {
-						al_draw_text(fuenteSubVentana, al_map_rgb(250, 75, 250), 160, 500, ALLEGRO_ALIGN_CENTRE, "MANTICORE");
+					if ((XCursor >= 350 && XCursor <= 560) && (YCursor >= 480 && YCursor <= 520)) {
+						al_draw_text(fuenteSubVentana, al_map_rgb(250, 75, 250), 460, 500, ALLEGRO_ALIGN_CENTRE, "MANTICORE");
 
 						// Se revisa si se selecciona esta nave
 						if (evento.mouse.button & 1) {
@@ -242,8 +252,8 @@ int main() {
 					}
 
 					// Para seleccionar Siege
-					if ((XCursor >= 460 && XCursor <= 580) && (YCursor >= 480 && YCursor <= 520)) {
-						al_draw_text(fuenteSubVentana, al_map_rgb(250, 75, 75), 530, 500, ALLEGRO_ALIGN_CENTRE, "SIEGE");
+					if ((XCursor >= 860 && XCursor <= 980) && (YCursor >= 480 && YCursor <= 520)) {
+						al_draw_text(fuenteSubVentana, al_map_rgb(250, 75, 75), 930, 500, ALLEGRO_ALIGN_CENTRE, "SIEGE");
 
 						// Se revisa si se selecciona esta nave
 						if (evento.mouse.button & 1) {
@@ -255,8 +265,8 @@ int main() {
 					}
 
 					// Para seleccionar Specter
-					if ((XCursor >= 820 && XCursor <= 970) && (YCursor >= 480 && YCursor <= 520)) {
-						al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 75), 900, 500, ALLEGRO_ALIGN_CENTRE, "SPECTER");
+					if ((XCursor >= 1320 && XCursor <= 1460) && (YCursor >= 480 && YCursor <= 520)) {
+						al_draw_text(fuenteSubVentana, al_map_rgb(250, 250, 75), 1400, 500, ALLEGRO_ALIGN_CENTRE, "SPECTER");
 
 						// Se revisa si se selecciona esta nave
 						if (evento.mouse.button & 1) {
@@ -269,8 +279,8 @@ int main() {
 					}
 
 					// Si se quiere volver al menú principal
-					if ((XCursor >= mitadX - 150 && XCursor <= mitadX + 150) && (YCursor >= 780 && YCursor <= 875)) {
-						al_draw_text(TitleSubVentana, al_map_rgb(75, 250, 250), mitadX, 800, ALLEGRO_ALIGN_CENTRE, "REGRESAR AL MENU PRINCIPAL");
+					if ((XCursor >= mitadX - 450 && XCursor <= mitadX + 450) && (YCursor >= 780 && YCursor <= 875)) {
+						al_draw_text(TitleSubVentana, al_map_rgb(200, 200, 250), mitadX, 800, ALLEGRO_ALIGN_CENTRE, "REGRESAR AL MENU PRINCIPAL");
 
 						// Se revisa si se selecciona esta opcion
 						if (evento.mouse.button & 1) {
@@ -302,7 +312,49 @@ int main() {
 			// Se agrega el 1 al if para que solo cuente si se presiona el botón izquierdo
 			if (evento.mouse.button & 1) {
 
-				cout << "Ranking" << endl;
+
+				bool finale = false;
+
+				// Se limpia el display
+				al_clear_to_color(al_map_rgb(0, 0, 0));
+				al_flip_display();
+
+				// índice para recorrer el archivo
+				int indice = 0;
+
+				while (!finale) {
+
+					al_wait_for_event(cola_menu, &evento);
+
+					// Se limpia el display
+					al_clear_to_color(al_map_rgb(0, 0, 0));
+
+					// Se dibuja el fondo
+					al_draw_tinted_bitmap(FondoRegistro, al_map_rgb(50, 50, 50), 0, 0, NULL);
+
+					al_draw_text(TitleSubVentana, al_map_rgb(250, 250, 250), 400, 50, NULL, "REGISTRO JUGADORES");
+					al_draw_text(TitleSubVentana, al_map_rgb(250, 250, 250), 1500, 980, NULL, "SALIR");
+
+					// Se llama la función para cargar el archivo desde el índice cero
+					cargarDatos(fuenteSubVentana, 0);
+
+					// Para eventos generados por el Mouse
+					if (evento.type == ALLEGRO_EVENT_MOUSE_AXES)
+					{
+						XCursor = evento.mouse.x;
+						YCursor = evento.mouse.y;
+					}
+
+					if ((XCursor <= 1800 && XCursor >= 1700) && (YCursor >= 980 && YCursor <= 1050)) {
+						finale = true;
+						break;
+					}
+
+
+					// Se refresca la pantalla
+					al_flip_display();
+
+				}
 			}
 		}
 
@@ -317,15 +369,68 @@ int main() {
 			if (evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 			{
 				// Se agrega el 1 al if para que solo cuente si se presiona el botón izquierdo
+				// Se creará una ventana donde se desplieguen los botones que se utilizan para Jugar
 				if (evento.mouse.button & 1) {
 
-					cout << "instrucciones" << endl;
+					bool end = false;
+					// Se limpia el display
+					al_clear_to_color(al_map_rgb(0, 0, 0));
+					al_flip_display();
+					
+					while (!end) {
+
+						// Se espera un evento
+						al_wait_for_event(cola_menu, &evento);
+
+						// Se limpia el display
+						al_clear_to_color(al_map_rgb(0, 0, 0));
+
+						// Se dibuja una imágen de fondo
+						al_draw_tinted_scaled_bitmap(FondoIns, al_map_rgb(100, 100, 100), 0, 0, 4000, 2017, 0, 0, 1920, 1080, NULL);
+
+						// Texto
+						al_draw_text(TitleSubVentana, al_map_rgb(200, 200, 25), mitadX, 100, ALLEGRO_ALIGN_CENTRE, "Q INSTRUCCIONES Q");
+
+						al_draw_text(TitleSubVentana, al_map_rgb(200, 200, 250), mitadX - 400, 300, ALLEGRO_ALIGN_CENTRE, "DISPAROS");
+
+						al_draw_text(TitleSubVentana, al_map_rgb(200, 200, 250), mitadX + 400, 300, ALLEGRO_ALIGN_CENTRE, "MOVIMIENTO");
+
+						// Se dibujan las imágenes
+						al_draw_bitmap(barra, mitadX - 525, 500, NULL);
+						al_draw_bitmap(flechas, mitadX + 275, 460, NULL);
+
+						// Para regresar al menú principal
+						al_draw_text(TitleSubVentana, al_map_rgb(200, 200, 25), mitadX + 75, 800, ALLEGRO_ALIGN_CENTRE, "REGRESAR AL MENU PRINCIPAL");
+
+						// Para eventos generados por el Mouse
+						if (evento.type == ALLEGRO_EVENT_MOUSE_AXES)
+						{
+							XCursor = evento.mouse.x;
+							YCursor = evento.mouse.y;
+						}
+
+						// Si se quiere volver al menú principal
+						if ((XCursor >= mitadX - 525 && XCursor <= mitadX + 525) && (YCursor >= 780 && YCursor <= 875)) {
+							al_draw_text(TitleSubVentana, al_map_rgb(200, 200, 250), mitadX + 75, 800, ALLEGRO_ALIGN_CENTRE, "REGRESAR AL MENU PRINCIPAL");
+
+							// Se revisa si se selecciona esta opcion
+							if (evento.mouse.button & 1) {
+
+								// Se termina el ciclo
+								end = true;
+							}
+						}
+
+						// Se refresca la pantalla
+						al_flip_display();
+					}
+
 				}
 			}
 
 		}
 
-		// Para revisar si esta en la opción INSTRUCCIONES
+		// Para revisar si esta en la opción Salir
 		// Si revisa si esta en el rango de X y Y correcto
 		if ((XCursor >= mitadX - 125 && XCursor <= mitadX + 125) && (YCursor >= 880 && YCursor <= 970)) {
 
